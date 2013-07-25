@@ -3,7 +3,7 @@
 Plugin Name: Bitcoins
 Plugin URI: http://www.osclass.org/
 Description: Display the price of an ad in bitcoins
-Version: 1.0
+Version: 1.1.0
 Author: OSClass
 Author URI: http://www.osclass.org/
 Short Name: bitcoins
@@ -25,7 +25,7 @@ Plugin update URI: bitcoins
         osc_set_preference("rates", $rates, "bitcoins");
     }
     
-    function bitcoins_price() {
+    function bitcoins_price($formatted_price) {
         if(osc_item_price()!=NULL && osc_item_price()!='' && osc_item_price()!=0) {
             $rates = json_decode(osc_get_preference("rates", "bitcoins"), true);
             if(isset($rates[osc_item_currency()])) {
@@ -43,7 +43,7 @@ Plugin update URI: bitcoins
                     $currencyFormat = osc_locale_currency_format();
                     $currencyFormat = str_replace('{NUMBER}', number_format($price, osc_locale_num_dec(), osc_locale_dec_point(), osc_locale_thousands_sep()), $currencyFormat);
                     $currencyFormat = str_replace('{CURRENCY}', 'BTC', $currencyFormat);
-                    echo '<span class="bitcoin_price" >( '.$currencyFormat.' )</span>';
+                    return $formatted_price.' <span class="bitcoin_price" >( '.$currencyFormat.' )</span>';
                 }
             }
         }
@@ -57,6 +57,7 @@ Plugin update URI: bitcoins
     osc_add_hook(osc_plugin_path(__FILE__)."_uninstall", 'bitcoins_uninstall');
 
     osc_add_hook('cron_hourly', 'bitcoins_get_data');
+    osc_add_filter('item_price', 'bitcoins_price', 10);
     
     
 ?>
