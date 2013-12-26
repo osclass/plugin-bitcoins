@@ -3,7 +3,7 @@
 Plugin Name: Bitcoins
 Plugin URI: http://www.osclass.org/
 Description: Display the price of an ad in bitcoins
-Version: 1.1.0
+Version: 1.1.1
 Author: OSClass
 Author URI: http://www.osclass.org/
 Short Name: bitcoins
@@ -21,7 +21,7 @@ Plugin update URI: bitcoins
     }
 
     function bitcoins_get_data() {
-        $rates = osc_file_get_contents("http://bitcoincharts.com/t/weighted_prices.json");
+        $rates = osc_file_get_contents("http://api.bitcoincharts.com/v1/weighted_prices.json");
         osc_set_preference("rates", $rates, "bitcoins");
     }
     
@@ -47,6 +47,7 @@ Plugin update URI: bitcoins
                 }
             }
         }
+        return $formatted_price;
     }
     
     
